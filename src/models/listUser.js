@@ -12,6 +12,9 @@ class UserList {
     loginUser(usuario, password, idSocket) {
         const user = this.users.find(user => user.user === usuario && user.password === password);
         if (user) {
+            if (user.estado) {
+                return { mensaje: "Usuario ya está conectado" };
+            }
             user.idSocket = idSocket;  
             user.estado = true
             return user;  
@@ -27,25 +30,33 @@ class UserList {
         });
     }    
     buscarUser(idUser) {
-        return this.users.find(user => user.id === idUser); // Retorna un solo usuario o undefined
-    }
+        return this.users.find(user => user.id === idUser && user.estado === true);
+    }    
     getUsers() {
-        return this.users.filter(user=> user.estado === true); // Nombre corregido para reflejar que devuelve múltiples usuarios
+        return this.users.filter(user=> user.estado === true);
     }
 
-    ganados(idUser) {
+    usuarioGanador(idUser) {
         this.users = this.users.map(user => {
             if (user.id === idUser) {
-                user.ganados = (user.ganados || 0) + 1; // Asegura que `ganados` existe
+                user.ganados = (user.ganados || 0) + 1;
             }
             return user;
         });
     }
 
-    perdidos(idUser) {
+    usuarioPerdedor(idUser) {
         this.users = this.users.map(user => {
             if (user.id === idUser) {
-                user.perdidos = (user.perdidos || 0) + 1; // Asegura que `perdidos` existe
+                user.perdidos = (user.perdidos || 0) + 1; 
+            }
+            return user;
+        });
+    }
+    usuarioEmpate(idUser1, idUser2) {
+        this.users = this.users.map(user => {
+            if (user.id === idUser1 || user.id === idUser2) {
+                user.empate= (user.empate || 0) + 1; 
             }
             return user;
         });

@@ -9,6 +9,7 @@ class User{
         this.estado= true
         this.ganados= 0
         this.perdidos= 0
+        this.empate=0
     }
 }
 module.exports = User;
