@@ -4,31 +4,32 @@ class UserList {
     constructor() {
         this.users = [];
     }
-    addUser(name, user , password , idSocket) {
+    addUser(name, user, password, idSocket) {
+        const existingUser = this.users.find(u => u.user === user && u.password === password);
+        if (existingUser) {
+            console.log(existingUser)
+            // Si el usuario ya existe, solo actualiza su idSocket
+            existingUser.idSocket = idSocket;
+            existingUser.estado=true
+            return { mensaje: "Usuario ya registrado, idSocket actualizado", usuario: existingUser };
+        }
+        // Si no existe, crea un nuevo usuario y agrégalo a la lista
         const newUser = new User(name, user, password, idSocket);
         this.users.push(newUser);
-        return this.users;
-    }
-    loginUser(usuario, password, idSocket) {
-        const user = this.users.find(user => user.user === usuario && user.password === password);
-        if (user) {
-            if (user.estado) {
-                return { mensaje: "Usuario ya está conectado" };
-            }
-            user.idSocket = idSocket;  
-            user.estado = true
-            return user;  
-        }
-        return { mensaje: "Usuario no encontrado" };
+        return { mensaje: "Nuevo usuario registrado", usuario: newUser };
     }
     
     removeUser(idUser) {
-        this.users.forEach(user => {
-            if (user.id === idUser) {
-                user.estado = false; 
-            }
-        });
-    }    
+        const user = this.users.find(user => user.idSocket === idUser);
+        if (user) {
+            setTimeout(() => {
+                if (user.idSocket === idUser) {
+                    user.estado = false;
+                    console.log(`Usuario ${user.user} desconectado.`);
+                }
+            }, 2000);
+        }
+    }     
     buscarUser(idUser) {
         return this.users.find(user => user.id === idUser && user.estado === true);
     }    
