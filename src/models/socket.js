@@ -58,6 +58,20 @@ class Socket {
                 this.io.to(user2.idSocket).emit("movimiento-realizado", { index, usuario });
             });
 
+            socket.on("batalla-ganada", (data) => {
+                console.log("batalla-ganada:", data);
+                const { idBatalla, usuario } = data;
+                const { user1, user2 } = this.salas.getBatalla(idBatalla);
+                if(usuario.idSocket === user1.idSocket){
+                    this.salas.resolverBatalla(idBatalla,user1.id,user2.id)
+                }else{
+                    this.salas.resolverBatalla(idBatalla,user2.id,user1.id)
+                }
+                this.io.to(user1.idSocket).emit("ganador", { usuario });
+                this.io.to(user2.idSocket).emit("ganador", { usuario });
+            });
+
+
         });
     }
 }

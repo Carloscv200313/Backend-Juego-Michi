@@ -2,7 +2,7 @@ const User = require("./user");
 
 class UserList {
     constructor() {
-        this.users = [];
+        this.users = [ new User("Carlos", "sebas", "123", "12313123123"),new User("Jonatan", "jona", "123", "12313123123") ];
     }
     addUser(name, user, password, idSocket) {
         const existingUser = this.users.find(u => u.user === user && u.password === password);

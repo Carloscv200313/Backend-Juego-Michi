@@ -45,13 +45,13 @@ class Salas {
             console.error(`No se encontró la batalla con ID: ${id}`);
         }
     }
-    resolverBatalla(batalla, resultado) {
-        if (!batalla || !resultado) return { error: "Datos de batalla inválidos" };
-        if (resultado.empate) {
-            this.lista.usuarioEmpate(resultado.ganador, resultado.perdedor);
+    resolverBatalla(batalla , ganador , perdedor) {
+        if (!batalla || !ganador|| !perdedor) return { error: "Datos de batalla inválidos" };
+        if (ganador === perdedor) {
+            this.lista.usuarioEmpate(ganador,perdedor);
         } else {
-            this.lista.usuarioGanador(resultado.ganador);
-            this.lista.usuarioPerdedor(resultado.perdedor);
+            this.lista.usuarioGanador(ganador);
+            this.lista.usuarioPerdedor(perdedor);
         }
         this.batallas = this.batallas.filter(b => b !== batalla);
         return { mensaje: "Batalla resuelta y eliminada" };
